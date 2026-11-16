@@ -122,7 +122,7 @@ pnpm --filter @limited-drop/worker dev
 - **작업** = 그것을 구현하려면 무엇을 해야 하는가 (PR 하나 크기)
 - **QA** = 요구사항대로 제대로 동작하는가
 
-GitHub Issues 템플릿(티켓 / 작업 / QA)과 Projects 보드(`Backlog → In Progress → Review → QA → Done`)를 사용합니다.
+GitHub Issues 템플릿(티켓 / 작업 / QA)과 [Projects 보드](https://github.com/orgs/soldout-maker/projects/1)(`Backlog → In Progress → Review → QA → Done`)를 사용합니다.
 
 ### Git / Branch (Git Flow 유사)
 

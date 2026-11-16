@@ -42,7 +42,9 @@
   - 등록된 Drop 조회 확인
 ```
 
-### GitHub Projects 상태 (권장)
+### GitHub Projects 보드
+
+보드: **[Limited Drop](https://github.com/orgs/soldout-maker/projects/1)** (`soldout-maker` 조직, 비공개)
 
 ```text
 Backlog → In Progress → Review → QA → Done
@@ -57,6 +59,19 @@ Backlog → In Progress → Review → QA → Done
 | Done        | QA 통과                                           |
 
 > 작업 이슈는 PR merge 시 자동으로 닫혀도 됩니다. **티켓은 QA를 통과해야 Done**입니다.
+
+#### 보드 자동화 (권장 설정)
+
+보드 오른쪽 위 **⋯ → Workflows**에서 설정합니다 (API로는 설정할 수 없음).
+
+| 워크플로              | 설정                                   | 이유                               |
+| --------------------- | -------------------------------------- | ---------------------------------- |
+| Auto-add to project   | 켜기, 필터 `is:issue,pr`               | 이슈 / PR이 자동으로 보드에 추가됨 |
+| Item added to project | Status → Backlog                       | 새 카드는 Backlog에서 시작         |
+| Pull request merged   | Status → **QA** (기본값 Done에서 변경) | 기본값을 쓰면 QA 단계를 건너뜀     |
+| Item closed           | Status → Done                          | 티켓을 닫으면 완료                 |
+
+In Progress / Review로 옮기는 것은 직접 합니다 (작업 시작 시, PR을 열 때).
 
 ## 2. Branch 전략 (Git Flow 유사)
 
@@ -190,4 +205,4 @@ chore(config): eslint 설정 변경
    - Squash merge, Merge commit 허용 (위 4장 표 참고), Rebase merge는 꺼도 됨
    - Automatically delete head branches 켜기 (`develop`은 보호 규칙으로 삭제 방지)
 4. **Issues → Labels**: `ticket`, `task`, `qa` 라벨 생성 (이슈 템플릿에서 사용)
-5. **Projects**: 새 Board를 만들고 Status를 `Backlog / In Progress / Review / QA / Done`으로 설정
+5. **Projects**: ✅ [Limited Drop 보드](https://github.com/orgs/soldout-maker/projects/1) 생성 완료 (Status 5단계, 저장소 연결). 자동화는 1장의 "보드 자동화" 참고
