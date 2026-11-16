@@ -1,0 +1,38 @@
+name: 작업 (Task)
+description: 티켓을 구현하기 위한 개발 단위 — 무엇을 해야 하는가
+title: '[작업] '
+labels: ['task']
+body:
+  - type: input
+    id: ticket
+    attributes:
+      label: 상위 티켓
+      placeholder: '#12'
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 영역
+      multiple: true
+      options:
+        - web
+        - api
+        - worker
+        - packages
+        - infra / config
+        - docs
+  - type: textarea
+    id: todo
+    attributes:
+      label: 할 일
+      placeholder: |
+        - [ ] Drop 생성 API 구현
+        - [ ] 입력 validation 구현
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: 완료 조건
+      description: 이 작업이 끝났다고 말할 수 있는 기준
