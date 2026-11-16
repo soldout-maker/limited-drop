@@ -68,6 +68,7 @@ Git Flow 유사 전략:
 - `fix/*`(개발 중 버그)와 `hotfix/*`(운영 긴급 버그)를 구분합니다.
 - PR base: 일반 작업 → `develop`, `hotfix/*` → `main`. **`main`으로 일반 작업 PR을 만들지 않습니다.**
 - 커밋: Conventional Commits `type(scope): 설명` (설명은 한국어), 논리적 변경 단위로.
+- 커밋 메시지와 PR 본문에 `Co-Authored-By`나 "Generated with Claude Code" 같은 attribution 문구를 넣지 않습니다 (`.claude/settings.json`의 `attribution` 설정으로도 꺼 둠).
 - PR: 템플릿 5개 섹션 작성, 상대방 review 후 merge (혼자 merge 금지). `/pr` 스킬 사용.
 - 흐름: 티켓(무엇을/왜) → 작업(어떻게, PR 단위) → QA(요구사항대로 되는가) → 완료. `/ticket` 스킬 사용.
 
