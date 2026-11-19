@@ -49,6 +49,8 @@ pnpm --filter @limited-drop/api <script> # 패키지 하나만
 
 ## 코드 스타일
 
+자세한 규칙: [docs/conventions.md](docs/conventions.md) — 이름(파일은 kebab-case), TS, import 순서, 폴더 구조, API 값 표현(시간 UTC, 금액 정수), 용어집, 리뷰 규칙. 코드를 쓰기 전에 확인합니다.
+
 - TypeScript strict. `any` 금지(ESLint error) → `unknown` + type guard.
 - 타입 import는 `import type` (ESLint가 강제).
 - 포맷은 Prettier에 맡깁니다 (PostToolUse 훅이 수정한 파일을 자동 포맷).

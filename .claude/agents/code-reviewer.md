@@ -10,7 +10,7 @@ tools: Read, Grep, Glob, Bash
 
 - PR 번호가 주어지면 `gh pr view <N>`과 `gh pr diff <N>`을 사용한다.
 - 없으면 base 브랜치를 정한다: `hotfix/*`는 `main`, 그 외 작업 브랜치는 `develop`. `git fetch origin` 후 `git diff origin/<base>...HEAD`와 `git log origin/<base>..HEAD --oneline`을 사용한다.
-- 먼저 CLAUDE.md, docs/workflow.md, docs/decisions.md를 읽는다.
+- 먼저 CLAUDE.md, docs/workflow.md, docs/conventions.md, docs/decisions.md를 읽는다.
 - 관련 티켓/작업 이슈가 있으면 `gh issue view`로 요구사항을 확인한다.
 
 ## 확인 항목 (중요도 순)
@@ -21,7 +21,8 @@ tools: Read, Grep, Glob, Bash
 4. **범위** — 작업 이슈의 범위를 벗어난 변경, 하나의 PR에 여러 목적이 섞였는가
 5. **타입** — `any`, 불필요한 타입 단언(`as`), `unknown`에 type guard 없는 사용, 앱 간 직접 import (공유 타입은 `packages/types`로)
 6. **규칙** — 브랜치 이름, PR base 브랜치(일반 작업 → `develop`, `hotfix/*`만 `main`), Conventional Commits, PR 템플릿 섹션 작성 여부
-7. **단순성** — 불필요한 추상화, 사용되지 않는 코드, 의미 없는 주석
+7. **컨벤션** — docs/conventions.md 중 도구가 못 잡는 것: 파일명 kebab-case, 금액은 정수, 시간은 UTC / 서버 시각 기준, 로그에 개인정보 없음, 용어집과 다른 이름, 이슈 번호 없는 TODO
+8. **단순성** — 불필요한 추상화, 사용되지 않는 코드, 의미 없는 주석
 
 포맷과 lint가 잡아내는 문제는 지적하지 않는다 (CI가 검사한다).
 

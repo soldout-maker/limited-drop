@@ -41,8 +41,9 @@
 │  ├─ types/      # 앱 간 공유 타입 (@limited-drop/types)
 │  └─ config/     # 공유 tsconfig / ESLint 설정 (@limited-drop/config)
 ├─ docs/
-│  ├─ decisions.md  # 기술 결정 기록 (결정 필요 / 초기 선택 / 확정)
-│  └─ workflow.md   # 협업 규칙 (티켓→작업→QA, Git, PR)
+│  ├─ decisions.md  # 기술 결정 기록 + 서비스 정책 질문
+│  ├─ workflow.md   # 협업 규칙 (티켓→작업→QA, Git, PR)
+│  └─ conventions.md # 개발 컨벤션 (이름, TS, API, 리뷰 규칙 등)
 ├─ .claude/         # Claude Code 공유 설정 (스킬 / 에이전트 / 훅) — CLAUDE.md 참고
 ├─ .github/
 │  ├─ workflows/ci.yml
@@ -157,6 +158,10 @@ fix(queue): 대기열 순번 계산 오류 수정
 - **상대방 review 후 merge** — 혼자 merge하지 않음, CI 통과 필수
 - base 브랜치 확인: 일반 작업은 `develop`, `hotfix/*`만 `main`
 - PR은 작게 유지
+
+### 코드 스타일
+
+자세한 규칙은 [docs/conventions.md](./docs/conventions.md) (초안)를 참고하세요.
 
 ### 코드 스타일
 
