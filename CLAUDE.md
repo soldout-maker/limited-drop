@@ -1,6 +1,7 @@
 # CLAUDE.md
 
-한정 수량 드롭 판매 서비스. 2인 개발 Monorepo (pnpm workspace + Turborepo).
+**동네가 품절됐다** — 동네 빵집 · 떡집의 한정 수량 드롭 → 대기열 → 입장(5분 구매 권한) → 결제 → 픽업 QR. 2인 개발 Monorepo (pnpm workspace + Turborepo).
+기획서와 회의록은 노션(품절메이커 워크스페이스), 확정된 규칙과 결정은 이 저장소 `docs/`가 정본입니다.
 팀원 OS: Windows / macOS 혼용 — 스크립트와 훅은 OS에 의존하지 않게 작성합니다 (bash/PowerShell 전용 문법 대신 Node).
 
 ## 현재 단계
@@ -10,16 +11,17 @@
 ## 가장 중요한 규칙: 미결정 기술을 임의로 확정하지 않는다
 
 - 기술 선택 전에 [docs/decisions.md](docs/decisions.md)를 확인합니다.
-- 상태가 `결정 필요`인 항목(ORM, DB, 테스트, 상태관리, Redis, Queue, 인증, 결제, 실시간, 배포)과 관련된 **의존성 추가, 코드 작성, 스키마 설계를 하지 않습니다.** 필요하면 사용자에게 먼저 결정을 요청하고, 선택지와 trade-off를 제시합니다.
+- 상태가 `결정 필요`인 항목(ORM, DB, 테스트, 인증, 배포 등)과 관련된 **의존성 추가, 코드 작성, 스키마 설계를 하지 않습니다.** 필요하면 사용자에게 먼저 결정을 요청하고, 선택지와 trade-off를 제시합니다.
+- `초기 제안 📝`(기획상 계획: Redis + BullMQ, SSE, 토스페이먼츠, TanStack Query + Zustand, Husky 등)은 **방향으로만 참고**하고, 설치하기 전에 사용자에게 확정 여부를 확인합니다.
 - 결정이 나면 `/decision` 스킬로 decisions.md를 갱신합니다.
 - 서비스 정책(대기열 규칙, 재고, 결제 실패 처리 등)은 추측해서 정하지 않고 묻습니다.
 
 ## 구조
 
 ```text
-apps/web      Next.js 16 (App Router) — 사용자/판매자 화면
-apps/api      NestJS 12 — REST API (현재 AppModule만 있음)
-apps/worker   비동기 작업 진입점 (Queue 미결정, 현재 빈 파일)
+apps/web      Next.js 16 (App Router) — 손님 (customer) / 사장님 (seller) / 관리자 (admin) route group
+apps/api      NestJS 12 — REST API, 도메인 모듈은 복수형 (drops, orders …) (현재 AppModule만 있음)
+apps/worker   백그라운드 작업 — 미결제 재고 복구 등 (현재 빈 파일, 큐는 D-007)
 packages/types   공유 타입 @limited-drop/types (tsc로 dist 빌드 → 앱에서 import)
 packages/config  공유 tsconfig 프리셋 + ESLint flat config
 ```
@@ -49,7 +51,13 @@ pnpm --filter @limited-drop/api <script> # 패키지 하나만
 
 ## 코드 스타일
 
-자세한 규칙: [docs/conventions.md](docs/conventions.md) — 이름(파일은 kebab-case), TS, import 순서, 폴더 구조, API 값 표현(시간 UTC, 금액 정수), 용어집, 리뷰 규칙. 코드를 쓰기 전에 확인합니다.
+자세한 규칙: [docs/conventions.md](docs/conventions.md). **코드를 쓰기 전에 확인합니다.** 특히:
+
+- 이름은 12장 **도메인 용어 사전**을 따릅니다 (`Store`/`Place`, `CUSTOMER`/`SELLER`, `Admission`, `PickupSlot` …). 새 이름을 지어내지 않습니다.
+- 파일: 컴포넌트 `PascalCase.tsx`, 그 외 `kebab-case`, NestJS는 기본 규칙(`drops.service.ts`). 대소문자만 바꿀 땐 `git mv`.
+- 상태값 · 에러 코드 · 정책 숫자는 `packages/types`에 `as const` 객체로 정의하고, 코드에 숫자를 직접 쓰지 않습니다 (TS `enum` 금지).
+- API: `/api/v1`, `{ data }` / `{ error: { code, message } }`, 시간 UTC(오픈 판단은 서버 시간), 금액 원 단위 정수.
+- 11장 **기획 약속 규칙**: 재고 차감은 `reserveStock()` 한 곳, 입장 없이 구매 금지(403), 1인 한도 이중 확인, 결제 멱등, 상태 변경은 조건부 업데이트.
 
 - TypeScript strict. `any` 금지(ESLint error) → `unknown` + type guard.
 - 타입 import는 `import type` (ESLint가 강제).

@@ -21,8 +21,9 @@ tools: Read, Grep, Glob, Bash
 4. **범위** — 작업 이슈의 범위를 벗어난 변경, 하나의 PR에 여러 목적이 섞였는가
 5. **타입** — `any`, 불필요한 타입 단언(`as`), `unknown`에 type guard 없는 사용, 앱 간 직접 import (공유 타입은 `packages/types`로)
 6. **규칙** — 브랜치 이름, PR base 브랜치(일반 작업 → `develop`, `hotfix/*`만 `main`), Conventional Commits, PR 템플릿 섹션 작성 여부
-7. **컨벤션** — docs/conventions.md 중 도구가 못 잡는 것: 파일명 kebab-case, 금액은 정수, 시간은 UTC / 서버 시각 기준, 로그에 개인정보 없음, 용어집과 다른 이름, 이슈 번호 없는 TODO
-8. **단순성** — 불필요한 추상화, 사용되지 않는 코드, 의미 없는 주석
+7. **컨벤션** — docs/conventions.md 중 도구가 못 잡는 것: 파일명(컴포넌트 `PascalCase.tsx`, 그 외 kebab-case), 상태값 · 에러 코드 · 정책 숫자가 `packages/types`에 있는지(숫자 직접 사용 금지), 금액 정수, 시간 UTC / 서버 시각 기준, 로그에 개인정보 없음, 용어 사전과 다른 이름, 이슈 번호 없는 TODO
+8. **기획 약속 (conventions.md 11장)** — 재고 차감이 `reserveStock()` 한 곳인지, 입장 없는 구매 차단, 1인 한도 이중 확인, 결제 멱등 처리, 상태 변경의 조건부 업데이트. 위반은 반드시 수정 항목
+9. **단순성** — 불필요한 추상화, 사용되지 않는 코드, 의미 없는 주석
 
 포맷과 lint가 잡아내는 문제는 지적하지 않는다 (CI가 검사한다).
 
@@ -32,10 +33,10 @@ tools: Read, Grep, Glob, Bash
 ## 요약
 <merge 가능 / 수정 후 merge / 재검토 필요> — 한 줄 이유
 
-## 반드시 수정
+## [필수] merge 전에 고칠 것
 - [파일:줄] 문제 → 이유 → 제안
 
-## 고려해 볼 것
+## [제안] / [질문]
 - [파일:줄] ...
 
 ## 좋았던 점

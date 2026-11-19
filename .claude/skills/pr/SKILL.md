@@ -64,7 +64,7 @@ pnpm format:check && pnpm lint && pnpm typecheck && pnpm build
 - 제목 예: `release: 드롭 등록 기능 배포`
 - 본문: 포함된 PR 목록, 관련 티켓의 QA 완료 여부(QA 이슈 링크), 배포 시 주의사항.
 - QA가 끝나지 않은 티켓이 포함돼 있으면 경고한다.
-- Merge 방식은 Merge commit을 권장한다고 안내한다 (D-016 초기 제안).
+- Merge 방식은 [D-016](../../../docs/decisions.md)을 따른다. 아직 `결정 필요`이면 squash하면 develop과 이력이 어긋난다는 점만 알려주고 사용자에게 고르게 한다.
 
 ## 6. hotfix 후속 안내
 

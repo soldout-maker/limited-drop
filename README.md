@@ -1,6 +1,10 @@
-# Limited Drop
+# 동네가 품절됐다 (Limited Drop)
 
-한정 수량 상품을 정해진 시간에 오픈하고, 대기열 → 주문 → 결제 → 픽업까지 이어지는 **한정 드롭 판매 서비스**입니다.
+동네 빵집 · 떡집 사장님이 **정해진 시각에 한정 수량을 여는 "드롭"**을 등록하면, 손님은 **대기열**에 줄을 서고 순번이 되면 **5분 안에 결제**한 뒤 **픽업 QR**로 매장에서 받아 가는 서비스입니다.
+
+```text
+드롭 등록(사장님) → 오픈 · 대기열 → 입장(5분 구매 권한) → 결제 → 픽업 QR
+```
 
 ## 현재 개발 단계
 
@@ -12,22 +16,23 @@
 
 ## 기술 스택
 
-| 영역                 | 기술                       | 상태                                  |
-| -------------------- | -------------------------- | ------------------------------------- |
-| 언어                 | TypeScript (strict)        | 확정                                  |
-| Frontend             | Next.js (App Router)       | 확정 (방향)                           |
-| Backend              | NestJS, REST API           | 확정 (방향)                           |
-| Monorepo             | pnpm workspace + Turborepo | pnpm: 확정 / Turborepo: **초기 선택** |
-| Lint / Format        | ESLint + Prettier          | **초기 선택** (세부 규칙은 변경 가능) |
-| CI                   | GitHub Actions             | **초기 선택**                         |
-| ORM / DB             | —                          | **결정 필요**                         |
-| Redis / Queue        | —                          | **결정 필요**                         |
-| 상태관리 (web)       | —                          | **결정 필요**                         |
-| 테스트               | —                          | **결정 필요**                         |
-| 인증 / 결제 / 실시간 | —                          | **결정 필요**                         |
-| 배포                 | —                          | **결정 필요**                         |
+| 영역           | 기술                       | 상태                                  |
+| -------------- | -------------------------- | ------------------------------------- |
+| 언어           | TypeScript (strict)        | 확정                                  |
+| Frontend       | Next.js (App Router)       | 확정 (방향)                           |
+| Backend        | NestJS, REST API           | 확정 (방향)                           |
+| Monorepo       | pnpm workspace + Turborepo | pnpm: 확정 / Turborepo: **초기 선택** |
+| Lint / Format  | ESLint + Prettier          | **초기 선택** (세부 규칙은 변경 가능) |
+| CI             | GitHub Actions             | **초기 선택**                         |
+| ORM / DB       | Drizzle vs Prisma / —      | **결정 필요** (회의)                  |
+| Redis / Queue  | Redis + BullMQ             | 초기 제안                             |
+| 실시간         | SSE                        | 초기 제안                             |
+| 결제           | 토스페이먼츠               | 초기 제안                             |
+| 상태관리 (web) | TanStack Query + Zustand   | 초기 제안                             |
+| 테스트         | —                          | **결정 필요**                         |
+| 인증 / 배포    | —                          | **결정 필요**                         |
 
-버전과 선택 이유는 [docs/decisions.md](./docs/decisions.md)에 있습니다.
+`초기 제안`은 기획 단계의 계획이며 아직 설치하지 않았습니다. 버전과 선택 이유는 [docs/decisions.md](./docs/decisions.md)에 있습니다.
 
 ## 프로젝트 구조
 
@@ -113,6 +118,8 @@ pnpm --filter @limited-drop/worker dev
 | `REDIS_URL`    | api, worker | 추후 확정 (D-006)        |
 | `JWT_SECRET`   | api         | 추후 확정 (D-009)        |
 
+토스페이먼츠 · 카카오 · 공공데이터 키 자리도 `.env.example`에 주석으로 있습니다. 실제 키는 팀 비밀값 공유 방법(D-025)으로 받습니다.
+
 ## 협업 규칙
 
 자세한 내용은 [docs/workflow.md](./docs/workflow.md)를 참고하세요.
@@ -161,11 +168,18 @@ fix(queue): 대기열 순번 계산 오류 수정
 
 ### 코드 스타일
 
-자세한 규칙은 [docs/conventions.md](./docs/conventions.md) (초안)를 참고하세요.
+자세한 규칙은 **[docs/conventions.md](./docs/conventions.md)** (용어 사전, API 형식, 기획 약속 규칙 포함)를 참고하세요.
 
-### 코드 스타일
-
-- TypeScript strict mode
-- `any` 금지 (ESLint error) → `unknown` + type guard 사용
+- TypeScript strict mode, `any` 금지 (ESLint error) → `unknown` + type guard
+- 파일 이름: 컴포넌트 `PascalCase.tsx`, 그 외 `kebab-case`
+- 시간은 UTC, 금액은 원 단위 정수, 정책 숫자는 `packages/types`에서만
 - 포맷은 Prettier에 맡김 (VS Code 저장 시 자동 포맷 — 권장 확장은 `.vscode/extensions.json`)
-- 불필요한 주석은 최소화
+
+## 문서
+
+| 문서                                         | 내용                                            | 위치              |
+| -------------------------------------------- | ----------------------------------------------- | ----------------- |
+| [docs/conventions.md](./docs/conventions.md) | 개발 컨벤션 (정본)                              | GitHub            |
+| [docs/workflow.md](./docs/workflow.md)       | 티켓 → 작업 → QA, 브랜치 · 커밋 · PR, 협업 루틴 | GitHub            |
+| [docs/decisions.md](./docs/decisions.md)     | 기술 결정 기록, 서비스 정책 질문                | GitHub            |
+| 기획서, 회의록                               | 기획과 논의 기록                                | 노션 (품절메이커) |
