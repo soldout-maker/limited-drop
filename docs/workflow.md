@@ -157,40 +157,58 @@ type(scope): 설명
 ```
 
 ```text
-feat(drop): 드롭 생성 API 구현
-fix(queue): 대기열 순번 계산 오류 수정
-refactor(auth): 인증 서비스 구조 개선
-test(drop): 드롭 생성 테스트 추가
+feat(drops): 드롭 생성 API 추가
+fix(queue): 순번이 음수로 표시되는 문제 수정
+refactor(orders): 주문 상태 전이 구조 개선
+style(web): 포맷 정리
+test(drops): 드롭 생성 테스트 추가
 docs(api): API 문서 업데이트
-chore(config): eslint 설정 변경
+chore(ci): GitHub Actions 린트 단계 추가
 ```
 
-- `type`: `feat`, `fix`, `refactor`, `chore`, `docs`, `test` (hotfix 브랜치의 커밋은 `fix` 사용)
-- `scope`: 도메인(`drop`, `queue`, `order` 등) 또는 영역(`web`, `api`, `worker`, `config`, `ci`). 생략할 수 있습니다.
+| type       | 언제                                     |
+| ---------- | ---------------------------------------- |
+| `feat`     | 새 기능                                  |
+| `fix`      | 버그 수정 (hotfix 브랜치의 커밋도 `fix`) |
+| `refactor` | 동작 변화 없는 구조 개선                 |
+| `style`    | 포맷, 세미콜론 등 (동작 무관)            |
+| `test`     | 테스트 추가 · 수정                       |
+| `docs`     | 문서                                     |
+| `chore`    | 설정, 패키지, 빌드, CI                   |
+
+- `scope`: API 모듈 이름(`drops`, `queue`, `orders`, `payments`, `pickup` …) 또는 영역(`web`, `api`, `worker`, `config`, `ci`). 생략할 수 있습니다.
 - 커밋 하나에는 논리적인 변경 하나만 담습니다.
-- 현재는 도구로 검사하지 않습니다 → [D-013](./decisions.md).
+- 도구 검사(Husky + lint-staged)는 [D-013](./decisions.md) 결정 후 추가합니다.
 
 ## 4. Pull Request 규칙
 
-| PR                        | base      | merge 방식 (초기 제안, [D-016](./decisions.md))   |
-| ------------------------- | --------- | ------------------------------------------------- |
-| `feat/*` 등 → develop     | `develop` | Squash merge                                      |
-| `hotfix/*` → main         | `main`    | Squash merge                                      |
-| `develop` → main (릴리스) | `main`    | Merge commit (squash하면 develop과 이력이 어긋남) |
+| PR                        | base      | merge 방식                               |
+| ------------------------- | --------- | ---------------------------------------- |
+| `feat/*` 등 → develop     | `develop` | [D-016](./decisions.md) 결정 필요 (회의) |
+| `hotfix/*` → main         | `main`    | 〃                                       |
+| `develop` → main (릴리스) | `main`    | 〃 — squash하면 develop과 이력이 어긋남  |
 
 - PR 본문은 [PR 템플릿](../.github/pull_request_template.md)을 채웁니다: 작업 내용 / 변경 이유 / 구현 내용 / 테스트·확인 / 관련 티켓.
-- **본인이 작성한 PR을 혼자 merge하지 않습니다.** 상대방의 review 후 merge합니다.
-- PR은 작게 유지합니다. 리뷰하기 어려울 만큼 커지면 작업을 나눕니다.
-- PR 제목도 커밋 규칙과 같은 형식으로 작성합니다 (예: `feat(drop): 드롭 생성 API 구현`). Squash merge하면 PR 제목이 그대로 커밋 메시지가 됩니다.
-- **base 브랜치를 꼭 확인합니다.** GitHub 기본 브랜치를 `develop`으로 설정하면 실수가 줄어듭니다 (아래 5장).
+- **본인이 작성한 PR을 혼자 merge하지 않습니다.** 상대 승인 1개 이상 + CI 통과 후 merge합니다.
+- PR 제목은 커밋 규칙과 같은 형식입니다 (예: `feat(drops): 드롭 생성 화면`). Squash merge하면 PR 제목이 그대로 커밋 메시지가 됩니다.
+- **base 브랜치를 꼭 확인합니다.** 기본 브랜치가 `develop`이라 보통은 자동으로 맞습니다.
+- 크기, 리뷰 시간(24시간), 코멘트 머리말(`[필수]` `[제안]` `[질문]` `[사소]`)은 [conventions.md 14장](./conventions.md#14-리뷰-문화-초기-제안)을 따릅니다.
 
 ### 리뷰어 체크 포인트
 
 - 티켓/작업의 요구사항과 맞는가
-- `any` 없이 타입이 명확한가 (`unknown` + 타입 가드 사용)
+- [conventions.md](./conventions.md) 규칙 — 특히 11장(재고 차감 한 곳, 입장 없이 구매 금지, 멱등 결제, 서버 시간)
 - 아직 결정되지 않은 기술([decisions.md](./decisions.md))을 임의로 도입하지 않았는가
 - 불필요한 변경이 섞여 있지 않은가
 - base 브랜치가 맞는가 (`hotfix/*`만 `main`)
+
+## 4-1. 협업 루틴 `초기 제안`
+
+- **주 2회 30분 싱크.**
+- 매주 일요일 끝에 **"다음 주 할 일 3개"**를 각자 정합니다.
+- 작업은 GitHub Issues + [Projects 보드](https://github.com/orgs/soldout-maker/projects/1)로 관리하고, 브랜치 · PR에 이슈 번호를 연결합니다.
+- 담당 영역(구매 도메인 / 운영 도메인)과 상대 영역을 고칠 때의 규칙은 [conventions.md 13장](./conventions.md#13-기능별-모듈--화면--담당).
+- 기획 · 회의록은 노션, 확정된 규칙과 결정은 이 저장소 `docs/`에 둡니다.
 
 ## 5. GitHub 저장소 설정 (최초 1회, 관리자)
 
