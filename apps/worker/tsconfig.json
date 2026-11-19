@@ -1,0 +1,9 @@
+{
+  "extends": "@limited-drop/config/tsconfig/node.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": false
+  },
+  "include": ["src"]
+}

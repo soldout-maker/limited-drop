@@ -1,0 +1,27 @@
+name: QA
+description: 요구사항대로 제대로 동작하는가 — 티켓 단위 검증
+title: '[QA] '
+labels: ['qa']
+body:
+  - type: input
+    id: ticket
+    attributes:
+      label: 검증 대상 티켓
+      placeholder: '#12'
+    validations:
+      required: true
+  - type: textarea
+    id: checklist
+    attributes:
+      label: 검증 항목
+      placeholder: |
+        - [ ] 필수값 validation 확인
+        - [ ] 정상 등록 확인
+        - [ ] 등록된 데이터 조회 확인
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: 결과 / 발견된 문제
+      description: 문제가 있으면 fix 작업 이슈를 만들어 링크합니다.

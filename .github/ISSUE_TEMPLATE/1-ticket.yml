@@ -1,0 +1,41 @@
+name: 티켓 (Ticket)
+description: 무엇을, 왜 만들어야 하는가 — 사용자 요구사항 / 기능 목적 정의
+title: '[티켓] '
+labels: ['ticket']
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 요약
+      description: 한 문장으로 표현한 요구사항
+      placeholder: 판매자가 상품 드롭을 등록할 수 있어야 한다.
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: 목적
+      description: 이 기능이 왜 필요한가
+    validations:
+      required: true
+  - type: textarea
+    id: requirements
+    attributes:
+      label: 요구사항
+      placeholder: |
+        - 상품명
+        - 가격
+        - 판매 수량
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: 작업 목록
+      description: 이 티켓을 구현하기 위한 작업 이슈 링크 (작업 이슈 생성 후 갱신)
+      placeholder: |
+        - [ ] #
+  - type: textarea
+    id: notes
+    attributes:
+      label: 참고 / 미결정 사항
